@@ -1,3 +1,4 @@
+
 package com.java.spring;
 
 
@@ -17,86 +18,71 @@ import org.springframework.stereotype.Service;
 @Service
 public class OrderService {
 	
+	public int index;
+	public int remainingQuantity;
+	public int productQuantity;
+	public int orderQuantity;
 	
 	@Autowired
 	ProductDBstore productDBstore;
 
 	public static final ArrayList<Order> prodOrderDet = new ArrayList<Order>();
 	
-	public void addOrder(Order order){
+	
+	public  void addOrder(Order order){
 		
 		prodOrderDet.add(new Order(order.getOrderId(),order.getProductId(), order.getQuantity()));
+		List<Order> names = prodOrderDet.stream().collect(Collectors.toList());
 	
+		names.forEach(System.out::println);
 	}
 	
-	/*
-	public  boolean processOrder(Order order){
-		return false;
-	
-	}
-	public static void main(String[] args) {
-		
-		
-        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring-bean.xml");
-	       OrderService orderService = applicationContext.getBean(OrderService.class);
-    
-        
-        Order order = new Order(1,1,1);
-
-		boolean flag = orderService.processOrder(order);
-		
-		if(flag) {
-			System.out.println("Record added successfully");
-		}else {
-			System.out.println("Failed to add record");
-		}
-		}
-        */
 	
 
-	
-	
 	public boolean processOrder(Order order){
 
 		
+    List<Product> qualifiedOrder = productDBstore.products.stream().filter(c ->c.getId()==order.getProductId()).filter(c -> c.getQuantity() > order.getQuantity()).collect(Collectors.toList());
 		
-     List<Product> qOrder = productDBstore.products.stream().filter(c -> c.getQuantity() > order.getQuantity()).filter(c ->c.getId()==order.getProductId()).collect(Collectors.toList());
-		
-        System.out.println(qOrder);
+    System.out.println(qualifiedOrder);
 
-		if(qOrder != null) {
-			
+		if(qualifiedOrder != null) {
 			addOrder(order);
-	    /* prodOrderDet.add(new Order(order));
-		//order.addOrderDetails(order.Order(order.getProductId(), order.getQuantity()));
-			 prodOrderDet.add(new Order());
-	   */
-		
+			
+	
 		
 		//updating the ProductList after qualifying order
-       	int index = productDBstore.products.indexOf(qOrder);
-        productDBstore.updateQuantity(index, order.getQuantity());
+	    //getting the index
+     //  this.index = productDBstore.products.indexOf();
+	   this.index = 0;
+	//   if(this.index != -1) {
+		   
+	  
+       System.out.println("index");
+       System.out.println(this.index);
+        
+       
+       this.productQuantity =  productDBstore.products.get(this.index).getQuantity();
+       System.out.println("product	Quantity");
+       System.out.println(this.productQuantity);
+       
+       this.orderQuantity = order.getQuantity();
+       System.out.println("order Quantity");
+       System.out.println(this.orderQuantity);
+       
+       this.remainingQuantity = this.productQuantity - this.orderQuantity;
+       System.out.println("remaining Quantity");
+       System.out.println(this.remainingQuantity);
+       
+       productDBstore.products.get(this.index).setQuantity(this.remainingQuantity);
 		
 		return true;
 		
+	 //  } else {System.out.println("specified element is not present");}
 		}
-
-		 return false;
-		 
-		 
-		 
-			}
-	
-	/*public static void main(String[] args) {
-		
-		
-        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring-bean.xml");
-	     OrderService orderService = applicationContext.getBean(OrderService.class);
-        System.out.println(orderService.processOrder(new Order(1,1,3)));	
+        return false;
         
-	}*/
-	
-	
-	
-	
+        
+		 
+  }	
 }

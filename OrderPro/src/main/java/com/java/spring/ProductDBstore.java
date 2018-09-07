@@ -6,12 +6,14 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
+
 @Component("productDBstore")
 public class ProductDBstore {
 	
-
+public int newQ;
+public int newQuantity;
 	
-ArrayList<Product> products = new ArrayList<Product>();
+public static final ArrayList<Product> products = new ArrayList<Product>();
 public ProductDBstore() {
 	
 	products.add(new Product(1, "Biryani",200, 5));
@@ -26,14 +28,14 @@ public ProductDBstore() {
 
 	
 	
-	
+/*	
 public void updateQuantity(int indx, int quantity) {
 	
-int newQ= products.get(indx).getQuantity() ;
+this.newQ= products.get(indx).getQuantity() ;
 
-int newQuantity= newQ- quantity;
+this.newQuantity= newQ- quantity;
 products.get(indx).setQuantity(newQuantity);
-}
+}*/
 	
 
 
