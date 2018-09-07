@@ -33,7 +33,7 @@ public class OrderService {
 		
 		prodOrderDet.add(new Order(order.getOrderId(),order.getProductId(), order.getQuantity()));
 		List<Order> names = prodOrderDet.stream().collect(Collectors.toList());
-	
+		System.out.println("****printing after adding the qualified order to orderList  ********");
 		names.forEach(System.out::println);
 	}
 	
@@ -42,23 +42,25 @@ public class OrderService {
 	public boolean processOrder(Order order){
 
 		
-    List<Product> qualifiedOrder = productDBstore.products.stream().filter(c ->c.getId()==order.getProductId()).filter(c -> c.getQuantity() > order.getQuantity()).collect(Collectors.toList());
+
 		
+    
+  List<Product> qualifiedOrder = productDBstore.products.stream().filter(c ->c.getId()==order.getProductId()).filter(c -> c.getQuantity() > order.getQuantity()).collect(Collectors.toList());
+    
+    System.out.println("****printing out the qualified product order ********");
     System.out.println(qualifiedOrder);
 
-		if(qualifiedOrder != null) {
+	if(!qualifiedOrder.isEmpty()) {
+    
 			addOrder(order);
 			
 	
 		
 		//updating the ProductList after qualifying order
 	    //getting the index
-     //  this.index = productDBstore.products.indexOf();
-	   this.index = 0;
-	//   if(this.index != -1) {
-		   
-	  
-       System.out.println("index");
+       this.index = productDBstore.products.indexOf(qualifiedOrder.get(0));
+
+       System.out.println("*******finding the index of qualified order********");
        System.out.println(this.index);
         
        
@@ -75,10 +77,13 @@ public class OrderService {
        System.out.println(this.remainingQuantity);
        
        productDBstore.products.get(this.index).setQuantity(this.remainingQuantity);
-		
+      
+       System.out.println("*******Printing out the ProductList element after updating quantity(5-->3)********");
+       System.out.println(productDBstore.products.get(this.index));
+	   
+       
 		return true;
 		
-	 //  } else {System.out.println("specified element is not present");}
 		}
         return false;
         
